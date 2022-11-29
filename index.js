@@ -34,6 +34,12 @@ const run = async() => {
             res.status(403).send({accessToken: ''})
         })
 
+        // get all categories
+        app.get('/categories', async(req, res) => {
+            const query = {};
+            const categories = await categoriesCollection.find(query).toArray();
+            res.send(categories);
+        })
 
 
 
