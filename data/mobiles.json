@@ -2,7 +2,6 @@
 [
     
     {
-        "_id": 1,
         "title": "samsung galaxy 11",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -15,11 +14,9 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "Samsung",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fa"
       },
     {
-        "_id": 1,
         "title": "samsung galaxy 10",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -32,11 +29,9 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "Samsung",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fa"
       },
     {
-        "_id": 1,
         "title": "oppo reno 8",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -49,11 +44,9 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "Oppo",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fc"
       },
     {
-        "_id": 1,
         "title": "oppo reno 6",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -67,11 +60,9 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "Oppo",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fc"
       },
     {
-        "_id": 1,
         "title": "apple iphone 13",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -84,11 +75,9 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "apple",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fb"
       },
     {
-        "_id": 1,
         "title": "apple iphone 11",
         "location": "noakhali,bangladesh",
         "originalPrice": 420,
@@ -101,7 +90,6 @@
         "condition": "good",
         "phone": "01844322345",
         "about":"details",
-        "category_name": "apple",
-        "category_id": "01"
+        "category_id": "638107f61ef1b99d60f919fb"
       }
 ]

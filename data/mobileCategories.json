@@ -1,18 +1,21 @@
 [
     {
-        "category_name": "Samsung",
-        "id": "1"
+        "category_name": "Samsung"
     },
     {
-        "category_name": "Apple",
-        "id": "2"
+        "category_name": "Apple"
     },
     {
-        "category_name": "Oppo",
-        "id": "3"
+        "category_name": "Oppo"
     },
     {
-        "category_name": "nokia",
-        "id": "4"
+        "category_name": "Huawei"
+    },
+    {
+        "category_name": "Xiaomi"
+    },
+    {
+        "category_name": "nokia"
     }
+
 ]
