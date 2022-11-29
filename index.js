@@ -55,6 +55,15 @@ const run = async() => {
             res.send(product);
         })
 
+        // filter with categories id
+        app.get('/categories/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {}
+            const results = await productsCollection.find(query).toArray();
+            const resultCollections = results.filter(result => result.category_id === id)
+            res.send(resultCollections);
+        })
+
 
    
 
