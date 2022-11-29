@@ -64,6 +64,12 @@ const run = async() => {
             res.send(resultCollections);
         })
 
+        // get users 
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
+        });
 
    
 
