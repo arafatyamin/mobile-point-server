@@ -102,9 +102,44 @@ const run = async() => {
         })
         
 
-        
+        // get all booking with seller
+        app.get('/bookings/:email',  async (req, res) => {
+            const email = req.params.email;
 
-        
+            if (email !== email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+
+            const query = { 
+                sellerEmail: email };
+            const bookings = await bookingCollection.find(query).toArray();
+            res.send(bookings);
+        });
+
+        // get admin with email address
+        // app.get('/users/admin/:email', async (req, res) => {
+        //     const email = req.params.email;
+        //     const query = { email }
+        //     const user = await usersCollection.findOne(query);
+        //     res.send({ isAdmin: user?.role === 'admin' });
+        // })
+
+
+        // get admin with email address
+        // app.get('/users/sellers', async (req, res) => {
+        //     // const email = req.params.email;
+        //     const query = {  }
+        //     const user = await usersCollection.find(query);
+        //     const seller =  {user?.role === 'admin'} 
+        //     res.send();
+        // })
+
+        // add users
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        });
 
         
 
