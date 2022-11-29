@@ -148,7 +148,12 @@ const run = async() => {
             res.send(result);
         });
 
-        
+        // get advertise
+        app.get('/advertise', async (req, res) => {
+            const query = {}
+            const products = await advertiseCollection.find(query).toArray();
+            res.send(products);
+        })
 
         
 
