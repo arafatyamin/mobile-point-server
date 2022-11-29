@@ -194,9 +194,22 @@ const run = async() => {
             res.send(result);
         })
 
-        
+        // delete buyer booking item
+        app.delete('/product/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const filter = {_id: ObjectId(id)}
+            const result = await productsCollection.deleteOne(filter);
+            res.send(result);
+        })
 
-        
+        // delete buyer booking item
+        app.delete('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = {_id: ObjectId(id)}
+            const result = await bookingCollection.deleteOne(filter);
+            res.send(result);
+        })
 
         
 
