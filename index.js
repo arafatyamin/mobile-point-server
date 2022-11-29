@@ -85,7 +85,21 @@ const run = async() => {
             res.send(sellers);
         });
 
+        // get my products
+        app.get('/manage/products/:email', async(req, res) => {
+            const email = req.params.email;
+            const query = {sellerEmail: email};
+            const result = await productsCollection.find(query).toArray();
+            res.send(result);
+        })
 
+        // my order
+        app.get('/myOrder', async (req, res)=>{
+            const email = req.query.email;
+            const query = {email: email};
+            const result = await bookingCollection.find(query).toArray();
+            res.send(result);
+        })
         
 
         
