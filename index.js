@@ -155,7 +155,25 @@ const run = async() => {
             res.send(products);
         })
 
-        
+        // advertise item post
+        app.post('/advertise', async (req, res) => {
+            const advItem = req.body;
+
+            const query = {
+                _id: advItem._id,
+                sellerEmail: advItem.sellerEmail,
+            }
+
+            const alreadyAdded = await advertiseCollection.find(query).toArray();
+
+            if (alreadyAdded.length) {
+                const message = `You already have a booking on ${advItem.title}`
+                return res.send({ acknowledged: false, message })
+            }
+
+            const product = await advertiseCollection.insertOne(advItem);
+            res.send(product);
+        })
 
         
 
