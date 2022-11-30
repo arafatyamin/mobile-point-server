@@ -12,6 +12,25 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.o0lhbrs.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+function verifyJWT(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send('unauthorized access');
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
+        if (err) {
+            return res.status(403).send({ message: 'forbidden access' })
+        }
+        req.decoded = decoded;
+        next();
+    })
+
+}
+
 
 const run = async() => {
     try{
@@ -65,28 +84,28 @@ const run = async() => {
         })
 
         // get users 
-        app.get('/users', async (req, res) => {
+        app.get('/users',verifyJWT, async (req, res) => {
             const query = {};
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
 
         // get users 
-        app.get('/user', async (req, res) => {
+        app.get('/user',verifyJWT, async (req, res) => {
             const query = {role: 'user'};
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
 
         // get seller 
-        app.get('/seller', async (req, res) => {
+        app.get('/seller',verifyJWT, async (req, res) => {
             const query = {role: 'seller'};
             const sellers = await usersCollection.find(query).toArray();
             res.send(sellers);
         });
 
         // get my products
-        app.get('/manage/products/:email', async(req, res) => {
+        app.get('/manage/products/:email', verifyJWT, async(req, res) => {
             const email = req.params.email;
             const query = {sellerEmail: email};
             const result = await productsCollection.find(query).toArray();
@@ -103,7 +122,7 @@ const run = async() => {
         
 
         // get all booking with seller
-        app.get('/bookings/:email',  async (req, res) => {
+        app.get('/bookings/:email',   async (req, res) => {
             const email = req.params.email;
 
             if (email !== email) {
@@ -116,23 +135,6 @@ const run = async() => {
             res.send(bookings);
         });
 
-        // get admin with email address
-        // app.get('/users/admin/:email', async (req, res) => {
-        //     const email = req.params.email;
-        //     const query = { email }
-        //     const user = await usersCollection.findOne(query);
-        //     res.send({ isAdmin: user?.role === 'admin' });
-        // })
-
-
-        // get admin with email address
-        // app.get('/users/sellers', async (req, res) => {
-        //     // const email = req.params.email;
-        //     const query = {  }
-        //     const user = await usersCollection.find(query);
-        //     const seller =  {user?.role === 'admin'} 
-        //     res.send();
-        // })
 
         // add users
         app.post('/users', async (req, res) => {
@@ -151,7 +153,14 @@ const run = async() => {
         // get advertise
         app.get('/advertise', async (req, res) => {
             const query = {}
-            const products = await advertiseCollection.find(query).toArray();
+            const products = await advertiseCollection.find(query).sort({"postTime":-1}).toArray();
+            res.send(products);
+        })
+
+        // get advertise
+        app.get('/advertiseLimit', async (req, res) => {
+            const query = {}
+            const products = await advertiseCollection.find().sort( {"postTime":-1} ).limit(3).toArray();
             res.send(products);
         })
 
@@ -194,8 +203,8 @@ const run = async() => {
             res.send(result);
         })
 
-        // delete buyer booking item
-        app.delete('/product/:id', async (req, res) => {
+        // delete buyer product item
+        app.delete('/product/:id',  async (req, res) => {
             const id = req.params.id;
             console.log(id);
             const filter = {_id: ObjectId(id)}
@@ -204,7 +213,7 @@ const run = async() => {
         })
 
         // delete buyer booking item
-        app.delete('/booking/:id', async (req, res) => {
+        app.delete('/booking/:id',  async (req, res) => {
             const id = req.params.id;
             const filter = {_id: ObjectId(id)}
             const result = await bookingCollection.deleteOne(filter);
@@ -212,7 +221,7 @@ const run = async() => {
         })
 
         // check is admin
-        app.get('/user/admin/:email', async(req, res)=>{
+        app.get('/user/admin/:email',  async(req, res)=>{
             const email = req.params.email;
             const query = {email}
             const user = await usersCollection.findOne(query);
@@ -220,35 +229,13 @@ const run = async() => {
         })
 
         // check is seller
-        app.get('/user/seller/:email', async(req, res)=>{
+        app.get('/user/seller/:email',  async(req, res)=>{
             const email = req.params.email;
             const query = {email}
             const user = await usersCollection.findOne(query);
             res.send({isSeller: user?.role == 'seller'});
         })
 
-
-        // booking post
-        // app.post('/booking', async (req, res) => {
-        //     const product = req.body;
-        //     const result = await bookingCollection.insertOne(product);
-        //     res.send(result);
-        // })
-
-
-    //     // set admin role
-    //     app.put('/users/admin/:id', verifyJWT, verifyAdmin, async (req, res) => {
-    //         const id = req.params.id;
-    //         const filter = { _id: ObjectId(id) }
-    //         const options = { upsert: true };
-    //         const updatedDoc = {
-    //             $set: {
-    //                 role: 'admin'
-    //             }
-    //         }
-    //         const result = await usersCollection.updateOne(filter, updatedDoc, options);
-    //         res.send(result);
-    //     })
     }
 
 
