@@ -84,7 +84,7 @@ const run = async() => {
         })
 
         // get users 
-        app.get('/users',verifyJWT, async (req, res) => {
+        app.get('/users', async (req, res) => {
             const query = {};
             const users = await usersCollection.find(query).toArray();
             res.send(users);
@@ -146,8 +146,8 @@ const run = async() => {
         // add add product
         app.post('/addproduct', async (req, res) => {
             const user = req.body;
-            const result = await productsCollection.insertOne(user);
-            res.send(result);
+            const product = await productsCollection.insertOne(user);
+            res.send(product);
         });
 
         // get advertise
@@ -182,6 +182,21 @@ const run = async() => {
 
             const product = await advertiseCollection.insertOne(advItem);
             res.send(product);
+        })
+        // check is admin
+        app.get('/user/admin/:email',  async(req, res)=>{
+            const email = req.params.email;
+            const query = {email}
+            const user = await usersCollection.findOne(query);
+            res.send({isAdmin: user?.role == 'admin'});
+        })
+
+        // check is seller
+        app.get('/user/seller/:email',  async(req, res)=>{
+            const email = req.params.email;
+            const query = {email}
+            const user = await usersCollection.findOne(query);
+            res.send({isSeller: user?.role == 'seller'});
         })
 
         app.post('/booking', async(req, res) =>{
@@ -220,21 +235,24 @@ const run = async() => {
             res.send(result);
         })
 
-        // check is admin
-        app.get('/user/admin/:email',  async(req, res)=>{
-            const email = req.params.email;
-            const query = {email}
-            const user = await usersCollection.findOne(query);
-            res.send({isAdmin: user?.role == 'admin'});
+        // delete buyer booking item
+        app.delete('/user/:id',  async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const filter = {_id: ObjectId(id)}
+            const user = await usersCollection.deleteOne(filter);
+            res.send(user);
         })
+        
+        // app.get('/user/:id',  async (req, res) => {
+        //     const id = req.params.id;
+        //     console.log(id);
+        //     const filter = {_id: ObjectId(id)}
+        //     const user = await usersCollection.findOne(filter);
+        //     res.send(user);
+        // })
 
-        // check is seller
-        app.get('/user/seller/:email',  async(req, res)=>{
-            const email = req.params.email;
-            const query = {email}
-            const user = await usersCollection.findOne(query);
-            res.send({isSeller: user?.role == 'seller'});
-        })
+        
 
     }
 
