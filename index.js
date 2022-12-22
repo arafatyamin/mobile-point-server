@@ -160,7 +160,8 @@ const run = async() => {
             const payment = req.body;
             const result = await paymentsCollection.insertOne(payment);
             const id = payment.bookingId;
-            const filter = {_id: ObjectId(id)}
+            console.log('product-id',payment)
+            const filter = {productId:id}
             const updatedDoc = {
                 $set: {
                     paid: true,
@@ -168,6 +169,7 @@ const run = async() => {
                 }
             }
             const updateResult = await bookingCollection.updateOne(filter, updatedDoc)
+            // const update = await advertiseCollection.updateOne(filter, updatedDoc)
             res.send(result);
         })
         // add users
